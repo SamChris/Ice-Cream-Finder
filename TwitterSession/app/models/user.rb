@@ -4,24 +4,24 @@ require 'json'
 
 
 class User < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :twitter_user_id, :twitter_status_id, :screen_name
 
-  validates :twitter_user_id,
-  validates :twitter_status_id,
-  validates :screen_name,
+  # validates :twitter_user_id
+#   validates :twitter_status_id
+#   validates :screen_name
 
   has_many (
   :statuses,
-  class_name: 'statuses',
-  foreign_key: :twitter_user_id
+  class_name: 'status',
+  foreign_key: :twitter_user_id,
   primary_key: :id
   )
 
 
   def self.fetch_by_screen_name
     address = Addressable::Uri.new({scheme: 'https',
-      host: 'api.twitter.com'
-      path: '/1.1/statuses/user_timeline.json?'
+      host: 'api.twitter.com',
+      path: '/1.1/statuses/user_timeline.json?',
       query: {self.screen_name.to_s}
       }).to_s
 
